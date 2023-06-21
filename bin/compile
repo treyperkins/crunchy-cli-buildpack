@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 # bin/compile <build-dir> <cache-dir> <env-dir>
 
+# Download the latest Crunchy CLI (or version specified) and unzip to bin directory. 
+# Add to path if necessary
 echo "--- {}"
