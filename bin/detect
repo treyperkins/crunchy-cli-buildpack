@@ -2,5 +2,6 @@
 # bin/detect <build-dir>
 
 
-# Detect if zip and other dependencies are present.
-echo "--- {}"
+# TODO: Detect if zip and other dependencies are present.
+echo "CrunchyCLI"
+exit 0
