@@ -1,6 +1,49 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ruby
 # bin/compile <build-dir> <cache-dir> <env-dir>
 
 # Download the latest Crunchy CLI (or version specified) and unzip to bin directory. 
-# Add to path if necessary
-echo "--- {}"
+# Add to path.
+
+class CrunchCLI
+  attr_reader :build_dir, :install_dir, :profile_path
+
+  def initialize(build_dir_param)
+    @build_dir = Pathname(build_dir_param)
+    @install_dir = build_dir.join("crunchy_bridge_bin")
+    @profile_path = build_dir.join(".profile.d/crunchy_bridge_cli.sh")
+  end
+
+  def run
+    ensure_install_dir
+    ensure_profile_path
+    install
+    create_profile
+  end
+
+  def ensure_install_dir
+    # find or make the install directory
+  end
+
+  def ensure_profile_path
+    # find or make the profile path
+  end
+
+  def create_profile
+    # create the shell script to include in PATH
+  end
+
+  def install
+    # Detect latest release from crunchy github
+    url = 'https://api.github.com/repos/CrunchyData/bridge-cli/releases'
+
+
+    # Detech AMD64 release asset from crunchy github
+    # Replace 103461298 with latest release parsed from above URL
+    url = 'https://api.github.com/repos/CrunchyData/bridge-cli/releases/103461298/assets'
+
+    # Iterate through release assets until you find the release for linux amd64
+    release_search = 'linux_amd64'
+
+    # Unzip and add to a crunchy specific bin directory
+  end
+end
