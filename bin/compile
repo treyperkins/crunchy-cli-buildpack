@@ -32,6 +32,11 @@ class CrunchyCLI
 
   def create_profile
     # create the shell script to include in PATH
+    File.open(profile_path, "w") do |file|
+      file.puts "# Add crunchy CLI to the path"
+      file.puts "export PATH=$PATH:$HOME/#{ install_dir.basename }"
+    end
+    puts "-----> Created profile.d script"
   end
 
   def install
