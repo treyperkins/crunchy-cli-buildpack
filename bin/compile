@@ -4,7 +4,7 @@
 # Download the latest Crunchy CLI (or version specified) and unzip to bin directory. 
 # Add to path.
 
-class CrunchCLI
+class CrunchyCLI
   attr_reader :build_dir, :install_dir, :profile_path
 
   def initialize(build_dir_param)
@@ -33,17 +33,26 @@ class CrunchCLI
   end
 
   def install
-    # Detect latest release from crunchy github
-    url = 'https://api.github.com/repos/CrunchyData/bridge-cli/releases'
-
-
-    # Detech AMD64 release asset from crunchy github
-    # Replace 103461298 with latest release parsed from above URL
-    url = 'https://api.github.com/repos/CrunchyData/bridge-cli/releases/103461298/assets'
-
-    # Iterate through release assets until you find the release for linux amd64
-    release_search = 'linux_amd64'
-
+    build_uri = latest_amd64_build
     # Unzip and add to a crunchy specific bin directory
   end
+
+  private
+
+  # Detect latest release from crunchy github
+  def latest_release
+    url = 'https://api.github.com/repos/CrunchyData/bridge-cli/releases'
+  end
+
+  # Detect AMD64 release asset from crunchy github
+  def latest_amd64_build
+    release_number = latest_release
+
+    url = "https://api.github.com/repos/CrunchyData/bridge-cli/releases/#{release_number}/assets"
+    # Iterate through release assets until you find the release for linux amd64
+    release_search = 'linux_amd64'
+  end
 end
+
+
+CrunchyCLI.new(ARGV[0]).run
