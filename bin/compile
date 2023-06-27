@@ -22,10 +22,12 @@ class CrunchyCLI
 
   def ensure_install_dir
     # find or make the install directory
+    install_dir.mkpath
   end
 
   def ensure_profile_path
     # find or make the profile path
+    profile_path.parent.mkpath
   end
 
   def create_profile
