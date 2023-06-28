@@ -1,16 +1,21 @@
 #!/usr/bin/env ruby
 # bin/compile <build-dir> <cache-dir> <env-dir>
 
+require 'yaml'
+require 'pathname'
+require 'uri'
+require 'open-uri'
+require 'tempfile'
+
 # Download the latest Crunchy CLI (or version specified) and unzip to bin directory. 
 # Add to path.
-
 class CrunchyCLI
   attr_reader :build_dir, :install_dir, :profile_path
 
   def initialize(build_dir_param)
     @build_dir = Pathname(build_dir_param)
-    @install_dir = build_dir.join("crunchy_bridge_bin")
-    @profile_path = build_dir.join(".profile.d/crunchy_bridge_cli.sh")
+    @install_dir = build_dir.join('crunchy_bridge_bin')
+    @profile_path = build_dir.join('.profile.d/crunchy_bridge_cli.sh')
   end
 
   def run
@@ -32,11 +37,11 @@ class CrunchyCLI
 
   def create_profile
     # create the shell script to include in PATH
-    File.open(profile_path, "w") do |file|
-      file.puts "# Add crunchy CLI to the path"
+    File.open(profile_path, 'w') do |file|
+      file.puts '# Add crunchy CLI to the path'
       file.puts "export PATH=$PATH:$HOME/#{ install_dir.basename }"
     end
-    puts "-----> Created profile.d script"
+    puts '-----> Created profile.d script'
   end
 
   def install
@@ -60,6 +65,5 @@ class CrunchyCLI
     release_search = 'linux_amd64'
   end
 end
-
 
 CrunchyCLI.new(ARGV[0]).run
