@@ -47,7 +47,22 @@ class CrunchyCLI
 
   def install
     build_uri = latest_amd64_build
+
     # Unzip and add to a crunchy specific bin directory
+    filename = File.basename(uri_path)
+
+    temp_file = Tempfile.new(filename, binmode: true)
+    temp_file.write(URI.open(URI.parse(url)).read)
+    temp_file.close
+
+    pid = Process.spawn(
+      "unzip  -q #{temp_file.path} -d #{ @install_dir }"
+    )
+
+    processes[pid] = bin_name
+    puts "       Downloading and Extracting #{ bin_name }"
+
+    sleep 0.1 while processes.any?
   end
 
   private
