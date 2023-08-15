@@ -5,6 +5,7 @@ require 'yaml'
 require 'pathname'
 require 'uri'
 require 'open-uri'
+require 'json'
 require 'tempfile'
 
 # Download the latest Crunchy CLI (or version specified) and unzip to bin directory. 
@@ -51,9 +52,12 @@ class CrunchyCLI
 
   private
 
-  # Detect latest release from crunchy github
+  # Detect latest release id from crunchy github
   def latest_release
     url = 'https://api.github.com/repos/CrunchyData/bridge-cli/releases'
+
+    releases = JSON.parse(Net::HTTP.get(URI.parse(url)))
+    releases.first['id']
   end
 
   # Detect AMD64 release asset from crunchy github
@@ -61,8 +65,13 @@ class CrunchyCLI
     release_number = latest_release
 
     url = "https://api.github.com/repos/CrunchyData/bridge-cli/releases/#{release_number}/assets"
-    # Iterate through release assets until you find the release for linux amd64
+    assets = JSON.parse(Net::HTTP.get(URI.parse(url)))
+
+    # Find the release for linux amd64
     release_search = 'linux_amd64'
+
+    asset = assets.find { |a| a["name"].include?(release_search) }
+    asset["browser_download_url"]
   end
 end
 
