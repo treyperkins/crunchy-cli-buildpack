@@ -53,6 +53,14 @@ class CrunchyCLI
 
   def install
     processes = {}
+
+    trap("CHLD") do
+      while processes.any? && pid = Process.waitpid(-1, Process::WNOHANG)
+        bin_name = processes.delete(pid)
+        puts "       ...#{ bin_name } added to #{ install_dir }"
+      end
+    end
+
     build_uri = latest_amd64_build
 
     # Unzip and add to a crunchy specific bin directory
