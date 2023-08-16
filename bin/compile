@@ -50,10 +50,10 @@ class CrunchyCLI
     build_uri = latest_amd64_build
 
     # Unzip and add to a crunchy specific bin directory
-    filename = File.basename(uri_path)
+    filename = File.basename(build_uri)
 
     temp_file = Tempfile.new(filename, binmode: true)
-    temp_file.write(URI.open(URI.parse(url)).read)
+    temp_file.write(URI.open(URI.parse(build_uri)).read)
     temp_file.close
 
     pid = Process.spawn(
