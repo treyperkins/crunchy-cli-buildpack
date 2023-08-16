@@ -21,10 +21,15 @@ class CrunchyCLI
   end
 
   def run
+    puts 'before install dir'
     ensure_install_dir
+    puts 'before profile path'
     ensure_profile_path
+    puts 'before install'
     install
+    puts 'before profile create'
     create_profile
+    puts
   end
 
   def ensure_install_dir
