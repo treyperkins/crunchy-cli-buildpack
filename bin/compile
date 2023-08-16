@@ -61,8 +61,8 @@ class CrunchyCLI
       "unzip  -q #{temp_file.path} -d #{ @install_dir }"
     )
 
-    processes[pid] = bin_name
-    puts "       Downloading and Extracting #{ bin_name }"
+    processes[pid] = filename
+    puts "       Downloading and Extracting #{ filename }"
 
     sleep 0.1 while processes.any?
   end
