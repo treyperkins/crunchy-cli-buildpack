@@ -47,6 +47,7 @@ class CrunchyCLI
   end
 
   def install
+    processes = {}
     build_uri = latest_amd64_build
 
     # Unzip and add to a crunchy specific bin directory
