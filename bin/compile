@@ -54,7 +54,7 @@ class CrunchyCLI
   def install
     processes = {}
 
-    trap("CHLD") do
+    trap('CHLD') do
       while processes.any? && pid = Process.waitpid(-1, Process::WNOHANG)
         bin_name = processes.delete(pid)
         puts "       ...#{ bin_name } added to #{ install_dir }"
@@ -67,7 +67,7 @@ class CrunchyCLI
     filename = File.basename(URI.parse(build_uri).path)
 
     temp_file = Tempfile.new(filename, binmode: true)
-    temp_file.write(URI.open(URI.parse(build_uri)).read)
+    temp_file.write(URI.parse(build_uri).open.read)
     temp_file.close
 
     pid = Process.spawn(
@@ -100,8 +100,8 @@ class CrunchyCLI
     # Find the release for linux amd64
     release_search = 'linux_amd64'
 
-    asset = assets.find { |a| a["name"].include?(release_search) }
-    asset["browser_download_url"]
+    asset = assets.find { |a| a['name'].include?(release_search) }
+    asset['browser_download_url']
   end
 end
 
