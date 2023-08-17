@@ -51,7 +51,7 @@ class CrunchyCLI
     trap('CHLD') do
       while processes.any? && pid = Process.waitpid(-1, Process::WNOHANG)
         bin_name = processes.delete(pid)
-        puts "       ...#{ bin_name } added to #{ install_dir }"
+        puts "       ...Crunchy CLI added to #{install_dir}"
       end
     end
 
@@ -69,7 +69,7 @@ class CrunchyCLI
     )
 
     processes[pid] = filename
-    puts "       Downloading and Extracting #{ filename }"
+    puts "       Downloading and Extracting #{filename}"
 
     sleep 0.1 while processes.any?
   end
