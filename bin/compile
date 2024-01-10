@@ -11,12 +11,13 @@ require 'tempfile'
 # Download the latest Crunchy CLI (or version specified) and unzip to bin directory. 
 # Add to path.
 class CrunchyCLI
-  attr_reader :build_dir, :install_dir, :profile_path
+  attr_reader :build_dir, :install_dir, :profile_path, :pinned_version
 
   def initialize(build_dir_param)
     @build_dir = Pathname(build_dir_param)
     @install_dir = build_dir.join('crunchy_bridge_bin')
     @profile_path = build_dir.join('.profile.d/crunchy_bridge_cli.sh')
+    detect_pinned_version
   end
 
   def run
@@ -75,6 +76,23 @@ class CrunchyCLI
   end
 
   private
+
+  # Detect if a pinned version is defined
+  def detect_pinned_version
+    @pinned_version = parse_version_from_file
+  end
+
+  # Get the version file from build dir if it exists
+  def version_file
+    File.exists?()
+  end
+
+  # If version file is returned, read and return version from it
+  def parse_version_from_file
+    return nil if version_file.nil?
+
+    # match contents of version file via regex. Raise if not valid version format.
+  end
 
   # Detect latest release id from crunchy github
   def latest_release
