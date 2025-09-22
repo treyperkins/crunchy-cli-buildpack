@@ -108,7 +108,7 @@ class CrunchyCLI
   end
 
   def pinned_release
-    releases.find {|r| r["tag_name"] == pinned_version }
+    releases.find {|r| r["tag_name"] == pinned_version }['id']
   end
 
   def releases
