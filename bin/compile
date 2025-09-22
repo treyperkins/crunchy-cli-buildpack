@@ -97,7 +97,7 @@ class CrunchyCLI
   # If version file is returned, read and return version from it
   def parse_version_from_file
     version_string = version_file
-    return nil if version_string.nil? || version_string.blank?
+    return nil if version_string.nil? || version_string.empty?
 
     version_string
   end
