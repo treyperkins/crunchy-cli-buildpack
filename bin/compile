@@ -123,6 +123,7 @@ class CrunchyCLI
   end
 
   def pinned_amd64_build
+    puts pinned_release.inspect
     retrieve_amd64_build(pinned_release)
   end
 
