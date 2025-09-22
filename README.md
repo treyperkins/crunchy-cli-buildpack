@@ -1,1 +1,4 @@
-README.md
+# Crunchy Bridge CLI Heroku Buildpack
+Installs the [Crunchy Bridge CLI](https://github.com/CrunchyData/bridge-cli) onto your Heroku dynos. Will by default download the latest version available in the Github [releases list](https://github.com/CrunchyData/bridge-cli/releases), but can be pinned to a specific version.
+## Version Pinning
+To pin the installed CLI to a specific release create a `.crunchy_cli_version` file in the root directory of your application. Include the version string for the desired version in this file; for example: `v3.6.6`. Include the "v" since this script will match the release version explicitly against the Github release tags.

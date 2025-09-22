@@ -11,12 +11,13 @@ require 'tempfile'
 # Download the latest Crunchy CLI (or version specified) and unzip to bin directory. 
 # Add to path.
 class CrunchyCLI
-  attr_reader :build_dir, :install_dir, :profile_path
+  attr_reader :build_dir, :install_dir, :profile_path, :pinned_version
 
   def initialize(build_dir_param)
     @build_dir = Pathname(build_dir_param)
     @install_dir = build_dir.join('crunchy_bridge_bin')
     @profile_path = build_dir.join('.profile.d/crunchy_bridge_cli.sh')
+    detect_pinned_version
   end
 
   def run
@@ -55,7 +56,11 @@ class CrunchyCLI
       end
     end
 
-    build_uri = latest_amd64_build
+    if pinned_version
+      build_uri = pinned_amd64_build
+    else
+      build_uri = latest_amd64_build
+    end
 
     # Unzip and add to a crunchy specific bin directory
     filename = File.basename(URI.parse(build_uri).path)
@@ -76,18 +81,52 @@ class CrunchyCLI
 
   private
 
+  # Detect if a pinned version is defined
+  def detect_pinned_version
+    @pinned_version = parse_version_from_file
+  end
+
+  # Get the version file from build dir if it exists
+  def version_file
+    version_file_path = build_dir.join('.crunchy_cli_version')
+    return nil unless File.exist?(version_file_path)
+      
+    File.read(version_file_path)
+  end
+
+  # If version file is returned, read and return version from it
+  def parse_version_from_file
+    version_string = version_file
+    return nil if version_string.nil? || version_string.empty?
+
+    version_string
+  end
+
   # Detect latest release id from crunchy github
   def latest_release
+    releases.first['id']
+  end
+
+  def pinned_release
+    releases.find {|r| r["tag_name"] == pinned_version }['id']
+  end
+
+  def releases
     url = 'https://api.github.com/repos/CrunchyData/bridge-cli/releases'
 
-    releases = JSON.parse(Net::HTTP.get(URI.parse(url)))
-    releases.first['id']
+    JSON.parse(Net::HTTP.get(URI.parse(url)))
   end
 
   # Detect AMD64 release asset from crunchy github
   def latest_amd64_build
-    release_number = latest_release
+    retrieve_amd64_build(latest_release)
+  end
 
+  def pinned_amd64_build
+    retrieve_amd64_build(pinned_release)
+  end
+
+  def retrieve_amd64_build(release_number)
     url = "https://api.github.com/repos/CrunchyData/bridge-cli/releases/#{release_number}/assets"
     assets = JSON.parse(Net::HTTP.get(URI.parse(url)))
 
