@@ -89,7 +89,7 @@ class CrunchyCLI
   # Get the version file from build dir if it exists
   def version_file
     version_file_path = build_dir.join('.crunchy_cli_version')
-    return nil unless File.exists?(version_file_path)
+    return nil unless File.exist?(version_file_path)
       
     File.read(version_file_path)
   end
